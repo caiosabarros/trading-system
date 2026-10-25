@@ -1,0 +1,8 @@
+# CMake build directories
+build/
+
+# Compiled executables
+dummy
+
+# Generated assembly files
+*.s
