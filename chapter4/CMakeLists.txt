@@ -8,7 +8,7 @@ set(CMAKE_CXX_COMPILER g++)
 set(CMAKE_CXX_FLAGS "-std=c++2a -Wall -Wextra -Werror -Wpedantic")
 set(CMAKE_VERBOSE_MAKEFILE on)
 
-file(GLOB SOURCES "dummy.cpp")
+file(GLOB SOURCES "dummy.cpp, threads.cpp")
 
 include_directories(${PROJECT_SOURCE_DIR})
 
