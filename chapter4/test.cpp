@@ -1,5 +1,6 @@
 # include "macros.h"
 # include <iostream>
+# include "mem_pool.h"
 
 int main() {
 	int x = 5;
