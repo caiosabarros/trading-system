@@ -10,7 +10,7 @@ set(CMAKE_VERBOSE_MAKEFILE on)
 
 # everytime I create a new .cpp file, I must add it here,
 # as the cmake configuration is done only once.
-file(GLOB SOURCES "test.cpp" "threads.cpp" "thread_example.cpp")
+file(GLOB SOURCES "test.cpp" "threads.cpp" "thread_example.cpp mem_pool_example.cpp")
 
 include_directories(${PROJECT_SOURCE_DIR})
 
@@ -31,6 +31,7 @@ list(APPEND LIBS pthread)
 
 # build this runnable executable out of this .cpp file
 add_executable(thread_example thread_example.cpp)
+add_executable(mem_pool_example mem_pool_example.cpp)
 # when finding the code this exec depends on, go to the LIBS variable
 target_link_libraries(thread_example PUBLIC ${LIBS})
 

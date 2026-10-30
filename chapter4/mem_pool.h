@@ -33,6 +33,26 @@ namespace Common {
 			return ret; // return pointer to that object in memory (it's inside the store range of memory = memory pool)
 		}
 
+		auto deallocate(const T *elem) noexcept {
+			// reinterpret_cast can be used because a pointer to a struct equals a pointer to its first element
+			// elem is casted into a _const_ ObjectBlock because of the read-only nature of the _elem_
+			const auto elem_index = (reinterpret_cast<const ObjectBlock *>(elem) - &store_[0]);
+			ASSERT(!store_[elem_index].is_free_, "Expected in-use ObjectBlock at index:" + std::to_string(elem_index));
+			store_[elem_index].is_free_ = true;
+		}
+
+
+		// Deleted default, copy & move constructors and assignment-operators.
+		MemPool() = delete;
+
+		MemPool(const MemPool &) = delete;
+
+		MemPool(const MemPool &&) = delete;
+
+		MemPool &operator=(const MemPool &) = delete;
+
+		MemPool &operator=(const MemPool &&) = delete;
+
 	private:
 		auto updateNextFreeIndex() noexcept {
 			const auto initial_free_index = next_free_index_;

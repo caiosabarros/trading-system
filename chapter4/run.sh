@@ -10,7 +10,7 @@ NINJA=$(which ninja)
 
 # Configure it first
 # The below already creates the directory if it doesn't yet exist
-$CMAKE -DCMAKE_BUILD_TYPE=Release -DCMAKE_MAKE_PROGRAM=$NINJA -G Ninja -S . -B cmake-build-release
+$CMAKE -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_MAKE_PROGRAM="$NINJA" -S . -B cmake-build-release
 
 # Primarily used in pre-production build, cache elimination, cmakelists updates
 if [ "$rebuild" -eq 1 ]; then
