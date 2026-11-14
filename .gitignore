@@ -1,7 +1,7 @@
 # CMake build directories
 build/
 cmake-build-release/
-
+cmake-build-debug/
 # Compiled executables
 dummy
 

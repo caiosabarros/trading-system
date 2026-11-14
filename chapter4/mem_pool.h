@@ -10,6 +10,8 @@ namespace Common {
 	template<typename T>
 	class MemPool final {
 	public:
+		// This is also the reason we made our constructor explicit 
+		// – to prohibit implicit conversions where we do not expect them
 		explicit MemPool(std::size_t num_elems) :
 			store_(num_elems, {T(), true}) {
 		ASSERT(reinterpret_cast<const ObjectBlock *>(&(store_[0].object_)) == &(store_[0]),"T object should be first member of ObjectBlock.");
@@ -30,6 +32,7 @@ namespace Common {
 			// update next free index now
 			updateNextFreeIndex();
 
+			// the below is a pointer to the object T, not to object_block. This is why the is_free isn't shown when dereferencing the return from allocate()
 			return ret; // return pointer to that object in memory (it's inside the store range of memory = memory pool)
 		}
 
@@ -37,6 +40,9 @@ namespace Common {
 			// reinterpret_cast can be used because a pointer to a struct equals a pointer to its first element
 			// elem is casted into a _const_ ObjectBlock because of the read-only nature of the _elem_
 			const auto elem_index = (reinterpret_cast<const ObjectBlock *>(elem) - &store_[0]);
+			// TODO: make a test to fail the assert below - get some other store and try to deallocate some object not in that store
+			// The ptrs subtraction will yield a bigger number than the memory pool size, as the other object is somewhere else in memory
+			ASSERT(elem_index >= 0 && static_cast<size_t>(elem_index) < store_.size(), "Element being deallocated does not belong to this Memory pool.");
 			ASSERT(!store_[elem_index].is_free_, "Expected in-use ObjectBlock at index:" + std::to_string(elem_index));
 			store_[elem_index].is_free_ = true;
 		}
