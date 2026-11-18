@@ -5,6 +5,7 @@
 read -rp "rebuild? (0/1):" rebuild
 read -rp "run example? (0/1):" runit
 read -rp "debug? (0/1):" debug
+read -rp "specific executable? (0/1)" specific
 
 BUILD_TYPE="Release"
 BUILD_DIR="cmake-build-release"
@@ -28,11 +29,16 @@ fi
 
 $CMAKE --build $BUILD_DIR --target all -j 4
 
-if [ "$runit" -eq 1 ]; then
+if [ "$runit" -eq 1 && "$specific" -eq 0]; then
 	for f in $(ls cmake-build*/*_example); do
 		echo "Running "$f"...";
 		./$f
 	done
+fi
+
+if [ "$specific" -eq 1 ]; then
+	read -rp "program name:(executable)" name
+	./$BUILD_DIR/$name
 fi
 
 if [ "$debug" -eq 1 ]; then
